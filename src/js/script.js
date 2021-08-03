@@ -1,37 +1,54 @@
 let buttons = document.querySelectorAll('.buttons_wrapper__button');
-let scoreboardValue = document.querySelector(
-	'.calc_wrapper__scoreboard .value',
-);
+let scoreboardValue = document.querySelector('.calc_wrapper__scoreboard .value');
 
-for (let button of buttons) {
-	button.addEventListener('click', () => makeEvent(button));
+const resultButton = document.querySelector('.buttons_wrapper__button.result');
+
+for (const button of buttons) {
+	button.addEventListener('click', () => {
+		updateScoreboardValue(button);
+	});
 }
 
-const makeEvent = (button) => {
-	let buttonValue = button.textContent;
-	insert(buttonValue);
-};
+let scoreboardResult = '';
+const updateScoreboardValue = (button) => {
+	const buttonContent = button.textContent;
+	scoreboardResult += buttonContent;
+	const preLastSymbol = scoreboardResult[scoreboardResult.length - 2];
+	const lastSymbol = scoreboardResult[scoreboardResult.length - 1];
 
-const insert = (value) => {
-	if (scoreboardValue.textContent == 0) {
-		scoreboardValue.textContent = value;
-	} else if (value == '*' || value == '-' || value == '+') {
-		scoreboardValue.textContent += value;
-	} else if (value == '÷') {
-		scoreboardValue.textContent += '/';
-	} else if (
-		value === '0' ||
-		value === '1' ||
-		value === '2' ||
-		value === '3' ||
-		value === '4' ||
-		value === '5' ||
-		value === '6' ||
-		value === '7' ||
-		value === '8' ||
-		value === '9'
+	if (
+		(preLastSymbol === '/' ||
+			preLastSymbol === '*' ||
+			preLastSymbol === '-' ||
+			preLastSymbol === '+') &&
+		!scoreboardResult.includes(')') &&
+		!scoreboardResult.includes('(') &&
+		preLastSymbol &&
+		lastSymbol * 1 >= 0 &&
+		lastSymbol * 1 <= 9
 	) {
-		scoreboardValue.textContent += value;
-		scoreboardValue.textContent = eval(scoreboardValue.textContent);
+		scoreboardValue.textContent = eval(scoreboardResult);
+	} else if (
+		(scoreboardResult.includes('/') ||
+			scoreboardResult.includes('*') ||
+			scoreboardResult.includes('-') ||
+			scoreboardResult.includes('+')) &&
+		preLastSymbol &&
+		preLastSymbol * 1 >= 0 &&
+		preLastSymbol * 1 <= 9 &&
+		lastSymbol * 1 >= 0 &&
+		lastSymbol * 1 <= 9
+	) {
+		scoreboardResult = buttonContent;
+		scoreboardValue.textContent = scoreboardResult;
+	} else if (
+		!scoreboardResult.includes('/') ||
+		!scoreboardResult.includes('*') ||
+		!scoreboardResult.includes('-') ||
+		!scoreboardResult.includes('+')
+	) {
+		scoreboardValue.textContent = scoreboardResult;
+	} else if (buttonContent == '=') {
+
 	}
 };
