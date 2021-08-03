@@ -1,0 +1,15 @@
+{
+    "extends": [
+      "prettier"
+    ],
+    "rules": {
+      
+    },
+    "plugins": [
+      "prettier"
+    ],
+
+    "env":{
+      "es6": true
+    }
+  }
