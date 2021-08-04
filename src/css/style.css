@@ -63,6 +63,7 @@
     align-items: center;
 	background: #5a5b5c;
 	color: #fff;
+	cursor: pointer;
 }
 .calc_wrapper__buttons_wrapper.sim
 	.buttons_wrapper__button:nth-last-of-type(3) {

@@ -1,54 +1,40 @@
-let buttons = document.querySelectorAll('.buttons_wrapper__button');
-let scoreboardValue = document.querySelector('.calc_wrapper__scoreboard .value');
-
-const resultButton = document.querySelector('.buttons_wrapper__button.result');
+const buttons = document.querySelectorAll('.buttons_wrapper__button');
+const scoreboardValue = document.querySelector('.value'); 
 
 for (const button of buttons) {
 	button.addEventListener('click', () => {
-		updateScoreboardValue(button);
-	});
+		makeExpression(button.getAttribute('data-key'))
+		button.getAttribute('data-key') === 'equal' ? count() : null;
+	})
 }
 
-let scoreboardResult = '';
-const updateScoreboardValue = (button) => {
-	const buttonContent = button.textContent;
-	scoreboardResult += buttonContent;
-	const preLastSymbol = scoreboardResult[scoreboardResult.length - 2];
-	const lastSymbol = scoreboardResult[scoreboardResult.length - 1];
+window.addEventListener('keydown', (e) => {
+	makeExpression(e.key);
+	e.key === '=' || e.key === 'Enter' ? count() : null;
+})
 
-	if (
-		(preLastSymbol === '/' ||
-			preLastSymbol === '*' ||
-			preLastSymbol === '-' ||
-			preLastSymbol === '+') &&
-		!scoreboardResult.includes(')') &&
-		!scoreboardResult.includes('(') &&
-		preLastSymbol &&
-		lastSymbol * 1 >= 0 &&
-		lastSymbol * 1 <= 9
-	) {
-		scoreboardValue.textContent = eval(scoreboardResult);
-	} else if (
-		(scoreboardResult.includes('/') ||
-			scoreboardResult.includes('*') ||
-			scoreboardResult.includes('-') ||
-			scoreboardResult.includes('+')) &&
-		preLastSymbol &&
-		preLastSymbol * 1 >= 0 &&
-		preLastSymbol * 1 <= 9 &&
-		lastSymbol * 1 >= 0 &&
-		lastSymbol * 1 <= 9
-	) {
-		scoreboardResult = buttonContent;
-		scoreboardValue.textContent = scoreboardResult;
-	} else if (
-		!scoreboardResult.includes('/') ||
-		!scoreboardResult.includes('*') ||
-		!scoreboardResult.includes('-') ||
-		!scoreboardResult.includes('+')
-	) {
-		scoreboardValue.textContent = scoreboardResult;
-	} else if (buttonContent == '=') {
+let expression = '';
 
-	}
-};
+const makeExpression = (value) => {
+	
+	const expArr = [
+		'1', '2', '3',
+		'4', '5', '6',
+		'7', '8', '9',
+		'0', '/', '*',
+		'-', '+', 'AC',
+		'%', '.', '(',
+		')'
+	];
+
+	if (expArr.includes(value) && expression[0] !== '0' && scoreboardValue.textContent !== 0) {
+		expression += value;
+		scoreboardValue.textContent = expression;
+	} 
+}
+
+const count = () => {
+	expression.length !== 0 ? expression = eval(expression) : null;
+	scoreboardValue.textContent = expression;
+	expression === 0 ? expression ='' : null;
+}
