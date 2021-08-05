@@ -78,6 +78,11 @@
 .calc_wrapper__buttons_wrapper.sim .buttons_wrapper__button:nth-last-of-type(16) {
 	background: #fb9e0c;
 }
+
+.calc_wrapper__buttons_wrapper.sim .buttons_wrapper__button:nth-last-of-type(1){
+	border-bottom-right-radius: 15px;
+}
+
 .calc_wrapper__buttons_wrapper.sim .buttons_wrapper__button:nth-last-of-type(2),
 .calc_wrapper__buttons_wrapper.sim .buttons_wrapper__button:nth-last-of-type(3),
 .calc_wrapper__buttons_wrapper.sim .buttons_wrapper__button:nth-last-of-type(5),

@@ -3,149 +3,107 @@ const scoreboardValue = document.querySelector('.value');
 
 for (const button of buttons) {
 	button.addEventListener('click', () => {
-		makeExpression(button.getAttribute('data-key'));
-		button.getAttribute('data-key') === 'equal' ? count() : null;
+		const key = button.getAttribute('data-key');
+		calc(key);
 	});
-}
+};
 
-window.addEventListener('keydown', (e) => {
-	makeExpression(e.key);
-	e.key === '=' || e.key === 'Enter' ? count() : null;
+window.addEventListener('keydown', e => {
+	calc(e.key);
 });
 
-let expression = '';
-let keysValues = [];
-let nxFlag = false;
-
-const makeExpression = (value) => {
-	if (
-		value !== 'Shift' &&
-		value !== 'equal' &&
-		value !== 'Enter' &&
-		value !== 'Delete' &&
-		value !== 'AC'
-	) {
-		keysValues.push(value);
-	}
-
-	const expArr = [
-		'1', '2', '3', '4', '5',
-		'6', '7', '8', '9', '0',
-		'/', '*', '-', '+', '.',
-		'(', ')'
+const isNumber = key => {
+	const numbers = [
+		'1', '2', '3',
+		'4', '5', '6',
+		'7', '8', '9',
+		'0'
 	];
+	return numbers.includes(String(key));
+};
 
-	//% buttons funtional
-	if (value) {
-		if (keysValues[keysValues.length - 1] === '%') {
-			keysValues = findLastNumber(keysValues);
-			keysValues[keysValues.length - 1] *= 0.01;
-			expression = keysValues.join('');
-			scoreboardValue.textContent = expression;
+let currentValue = '';
+let valuesFromButtons = [];
+
+
+const calc = key => {
+	valuesFromButtons.length === 0 && isNumber(key) ? valuesFromButtons.push(key) : makeExpression(key);
+	showExpressionInScoreboard();
+};
+
+const showExpressionInScoreboard = () => {
+	scoreboardValue.textContent = valuesFromButtons.join('');
+};
+
+const makeExpression = key => {
+	isNumber(key) ? valuesFromButtons.push(key) : addSignToExpression(key);
+	
+};
+
+const addSignToExpression = key => {
+
+	const checkPrewKeyInExpression = () => {
+
+		const prewKey = valuesFromButtons[valuesFromButtons.length - 1];
+		
+		if (!isNumber(prewKey)) {
+			valuesFromButtons[valuesFromButtons.length - 1] = key;
+		} else {
+			valuesFromButtons.push(key);
 		}
-	}
+	};
 
-	//AC and Delete buttons funtional
-	if (value === 'AC' || value === 'Delete') {
-		expression = '';
-		scoreboardValue.textContent = 0;
-	}
+	switch (key) {
+		
+	case '/':
+		checkPrewKeyInExpression(key);
+		break;
+	
+	case '*':
+		checkPrewKeyInExpression(key);
+		break;
 
-	//AC and Delete buttons funtional
-	if (expArr.includes(value) && expression[0] !== '0' && scoreboardValue.textContent !== 0) {
-		expression += value;
-		scoreboardValue.textContent = expression;
-	}
+	case '-':
+		checkPrewKeyInExpression(key);
+		break;
 
-	//1/x
-	if (keysValues[keysValues.length - 1] === '1x') {
-		keysValues = findLastNumber(keysValues);
-		keysValues[keysValues.length - 1] = 1 / keysValues[keysValues.length - 1];
-		expression = keysValues.join('');
-		scoreboardValue.textContent = expression;
-	}
+	case '+':
+		checkPrewKeyInExpression(key);
+		break;
 
-	// sqrt(x)
-	if (keysValues[keysValues.length - 1] === '2x') {
-		keysValues = findLastNumber(keysValues);
-		keysValues[keysValues.length - 1] = Math.sqrt(keysValues[keysValues.length - 1]);
-		expression = keysValues.join('');
-		scoreboardValue.textContent = expression;
-	}
+	case 'equal':
+		valuesFromButtons.length !== 0 ? calculateExpression(valuesFromButtons) : null;
+		break;
 
-	//cbrt(x)
-	if (keysValues[keysValues.length - 1] === '3x') {
-		keysValues = findLastNumber(keysValues);
-		keysValues[keysValues.length - 1] = Math.cbrt(keysValues[keysValues.length - 1]);
-		expression = keysValues.join('');
-		scoreboardValue.textContent = expression;
-	}
+	case 'Enter':
+		valuesFromButtons.length !== 0 ? calculateExpression(valuesFromButtons) : null;
+		break;
 
-	//nx
-	if (keysValues[keysValues.length - 2] === 'nx') {
-		let result = Math.pow(keysValues[keysValues.length - 3], 1/keysValues[keysValues.length - 1]);
-		keysValues.splice(keysValues.length - 3, keysValues.length - 1);
-		keysValues.push(result);
-		expression = keysValues.join('');
-		scoreboardValue.textContent = expression;
-	}
+	case 'AC':
+		currentValue = '';
+		valuesFromButtons = [];
+		showExpressionInScoreboard();
+		break;
 
-	//log10
-	if (keysValues[keysValues.length - 1] === 'log10') {
-		keysValues[keysValues.length - 1] = Math.LN10;
-		expression = keysValues.join('');
-		scoreboardValue.textContent = expression;	
-	}
+	case 'Delete':
+		currentValue = '';
+		valuesFromButtons = [];
+		showExpressionInScoreboard();
+		break;
 
-	//x2
-	if (keysValues[keysValues.length - 1] === 'x2' && keysValues.length !==1 ) {
-		keysValues[keysValues.length - 2] = Math.pow(keysValues[keysValues.length - 2], 2);
-		keysValues.splice(keysValues.length - 1, 1);
-		expression = keysValues.join('');
-		scoreboardValue.textContent = expression;	
-	} else if (keysValues[0] === 'x2') {
-		keysValues = [];
-		expression = keysValues.join('');
-		scoreboardValue.textContent = 'Не хватает аргумента';
+	default:
+		break;
 	}
-
-	//x3
-	if (keysValues[keysValues.length - 1] === 'x3' && keysValues.length !==1 ) {
-		keysValues[keysValues.length - 2] = Math.pow(keysValues[keysValues.length - 2], 3);
-		keysValues.splice(keysValues.length - 1, 1);
-		expression = keysValues.join('');
-		scoreboardValue.textContent = expression;	
-	} else if (keysValues[0] === 'x3') {
-		keysValues = [];
-		expression = keysValues.join('');
-		scoreboardValue.textContent = 'Не хватает аргумента';
-	}
-
-	// console.log(value);
-	console.log(keysValues);
-	// console.log(expression);
 };
 
-//Enter and = buttons count funtional
-const count = () => {
-	expression.length !== 0 ? (expression = eval(expression)) : null;
-	scoreboardValue.textContent = expression;
-	expression === 0 ? (expression = '') : null;
-};
-
-//find last Number in arr
-const findLastNumber = (arr) => {
-	const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
-	let number = '';
-	let index = 0;
-	for (let i = arr.length - 2; i >= 0; i--) {
-		if (numbers.includes(arr[i])) {
-			number += arr[i];
-			index = i;
-		} else break;
-		number = number.split('').reverse().join('');
+const calculateExpression = arr => {
+	if (isNumber(arr[arr.length - 1])) {
+		currentValue = eval(arr.join(''));
+		valuesFromButtons = [];
+		valuesFromButtons.push(currentValue);
+		valuesFromButtons = valuesFromButtons.join('').split('');
+		currentValue = '';
+	} else if (!isNumber(arr[arr.length - 1])) {
+		arr.splice(arr.length - 1, 1);
 	}
-	arr.splice(index);
-	arr.push(number);
-	return arr;
 };
