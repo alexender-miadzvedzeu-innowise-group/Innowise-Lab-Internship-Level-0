@@ -46,12 +46,12 @@ const showExpressionInScoreboard = () => {
 	scoreboardValue.textContent = valuesFromButtons.join('');
 };
 
-const makeExpression = key => {
+export const makeExpression = key => {
 	isNumber(key) ? valuesFromButtons.push(key) : addSignToExpression(key);
 	
 };
 
-const addSignToExpression = key => {
+export const addSignToExpression = key => {
 
 	const checkPrewKeyInExpression = () => {
 
@@ -196,7 +196,7 @@ const addSignToExpression = key => {
 	}
 };
 
-const calculateExpression = arr => {
+export const calculateExpression = arr => {
 	if (isNumber(arr[arr.length - 1])) {
 		currentValue = eval(arr.join(''));
 		valuesFromButtons = [];
@@ -207,3 +207,9 @@ const calculateExpression = arr => {
 		arr.splice(arr.length - 1, 1);
 	}
 };
+
+
+
+export function sum(a, b) {
+	return a + b;
+}
