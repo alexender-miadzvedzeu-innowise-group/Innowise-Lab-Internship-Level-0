@@ -1,22 +1,27 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
-	entry: ['./src/js/index.js'],
-	output: {
-		path: path.join(__dirname, './dist'),
-		filename: './js/bundle.js',
-	},
-	devtool: 'source-map',
+	entry: './src/js/script.js',
 	module: {
 		rules: [
-			{ test: /\.svg$/, use: 'svg-inline-loader' },
-			{ test: /\.css$/, use: ['style-loader', 'css-loader'] },
+			{
+				test: /\.css$/,
+				use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
+			},
 			{ test: /\.(js)$/, use: 'babel-loader' },
 		],
 	},
 	output: {
 		path: path.resolve(__dirname, 'dist'),
-		filename: '[index].bundle.js',
+		filename: 'index_bundle.js',
 	},
-	plugins: [],
+	plugins: [
+		new HtmlWebpackPlugin({
+			title: 'My App',
+			template: 'src/index.html',
+		}),
+		new webpack.HotModuleReplacementPlugin(),
+	],
 };

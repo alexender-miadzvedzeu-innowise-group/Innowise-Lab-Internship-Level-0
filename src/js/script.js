@@ -1,4 +1,6 @@
-import {sqNt} from './modules.js';
+import {sqNt, calculateExpression} from './modules.js';
+import '../css/style.css';
+
 
 const buttons = document.querySelectorAll('.buttons_wrapper__button');
 const scoreboardValue = document.querySelector('.value');
@@ -82,12 +84,16 @@ export const addSignToExpression = key => {
 		checkPrewKeyInExpression(key);
 		break;
 
+	case '=':
 	case 'equal':
-		valuesFromButtons.length !== 0 ? calculateExpression(valuesFromButtons) : null;
-		break;
-
 	case 'Enter':
-		valuesFromButtons.length !== 0 ? calculateExpression(valuesFromButtons) : null;
+		if (valuesFromButtons.length !== 0) {
+			currentValue = calculateExpression(valuesFromButtons);
+			valuesFromButtons = [];
+			valuesFromButtons.push(currentValue);
+			valuesFromButtons = valuesFromButtons.join('').split('');
+			currentValue = '';
+		}
 		break;
 
 	case 'AC':
@@ -100,7 +106,6 @@ export const addSignToExpression = key => {
 		currentValue = '';
 		valuesFromButtons = [];
 		scoreboardValue.textContent = 0;
-		debugger;
 		break;
 
 	case '2x': //functions from module
@@ -132,12 +137,7 @@ export const addSignToExpression = key => {
 		function _listinerForButton () {
 			const key = this.getAttribute('data-key');
 			if (isNumber(key)) {
-				sqNt({
-					currentValue,
-					valuesFromButtons,
-					isNumber,
-					n:key
-				});
+				sqNt({currentValue, valuesFromButtons, isNumber, n:key});
 
 				showExpressionInScoreboard();
 				
@@ -172,7 +172,6 @@ export const addSignToExpression = key => {
 		break;
 
 
-
 	case 'x2': //functions from module
 		if (isNumber(valuesFromButtons[valuesFromButtons.length - 1])) {
 			sqNt({currentValue, valuesFromButtons, isNumber, n:2});
@@ -195,21 +194,3 @@ export const addSignToExpression = key => {
 		break;
 	}
 };
-
-export const calculateExpression = arr => {
-	if (isNumber(arr[arr.length - 1])) {
-		currentValue = eval(arr.join(''));
-		valuesFromButtons = [];
-		valuesFromButtons.push(currentValue);
-		valuesFromButtons = valuesFromButtons.join('').split('');
-		currentValue = '';
-	} else if (!isNumber(arr[arr.length - 1])) {
-		arr.splice(arr.length - 1, 1);
-	}
-};
-
-
-
-export function sum(a, b) {
-	return a + b;
-}
