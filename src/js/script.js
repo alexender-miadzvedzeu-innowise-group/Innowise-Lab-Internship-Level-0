@@ -1,6 +1,17 @@
-import {sqNt, calculateExpression} from './modules.js';
-import '../css/style.css';
+import {
+	sqNt,
+	calculateExpression,
+	expInDegree,
+	tenInX,
+	log10,
+	findLastNumber,
+	isNumber,
+	ln,
+	backspace,
+	findZeroAfterSlash
+} from './modules.js';
 
+import '../css/style.css';
 
 const buttons = document.querySelectorAll('.buttons_wrapper__button');
 const scoreboardValue = document.querySelector('.value');
@@ -20,16 +31,6 @@ for (const button of buttons) {
 
 window.addEventListener('keydown', listinerForKeyButton);
 
-export const isNumber = key => {
-	const numbers = [
-		'1', '2', '3',
-		'4', '5', '6',
-		'7', '8', '9',
-		'0'
-	];
-	return numbers.includes(String(key));
-};
-
 let currentValue = '';
 let valuesFromButtons = [];
 
@@ -45,7 +46,11 @@ const calc = key => {
 };
 
 const showExpressionInScoreboard = () => {
-	scoreboardValue.textContent = valuesFromButtons.join('');
+	if (findZeroAfterSlash({valuesFromButtons})) {
+		scoreboardValue.textContent = 'На ноль делить нельзя';
+	} else {
+		scoreboardValue.textContent = valuesFromButtons.join('');
+	};
 };
 
 const makeExpression = key => {
@@ -54,7 +59,7 @@ const makeExpression = key => {
 
 const addSignToExpression = key => {
 
-	const checkPrewKeyInExpression = () => {
+	const checkPrewKeyInExpressionNum = () => {
 
 		const prewKey = valuesFromButtons[valuesFromButtons.length - 1];
 		
@@ -65,34 +70,54 @@ const addSignToExpression = key => {
 		}
 	};
 
-	switch (key) {
+	const checkPrewKeyInExpressionSym = () => {
+
+		const prewKey = valuesFromButtons[valuesFromButtons.length - 1];
 		
+		if (isNumber(prewKey)) {
+			valuesFromButtons[valuesFromButtons.length - 1] = key;
+		} else {
+			valuesFromButtons.push(key);
+		}
+	};
+
+	switch (key) {
 	case '/':
-		checkPrewKeyInExpression(key);
+		checkPrewKeyInExpressionNum(key);
 		break;
-	
+
 	case '*':
-		checkPrewKeyInExpression(key);
+		checkPrewKeyInExpressionNum(key);
 		break;
 
 	case '-':
-		checkPrewKeyInExpression(key);
+		checkPrewKeyInExpressionNum(key);
 		break;
 
 	case '+':
-		checkPrewKeyInExpression(key);
+		checkPrewKeyInExpressionNum(key);
+		break;
+
+	case '(':
+		checkPrewKeyInExpressionSym(key);
+		break;
+
+	case ')':
+		checkPrewKeyInExpressionNum(key);
 		break;
 
 	case '=':
 	case 'equal':
 	case 'Enter':
-		if (valuesFromButtons.length !== 0) {
-			currentValue = calculateExpression(valuesFromButtons);
+		if (valuesFromButtons.length !== 0 && !findZeroAfterSlash({valuesFromButtons})) {
+			currentValue = calculateExpression(valuesFromButtons, scoreboardValue);
 			valuesFromButtons = [];
 			valuesFromButtons.push(currentValue);
 			valuesFromButtons = valuesFromButtons.join('').split('');
 			currentValue = '';
-		}
+		} else {
+			showExpressionInScoreboard();
+		};
 		break;
 
 	case 'AC':
@@ -109,50 +134,53 @@ const addSignToExpression = key => {
 
 	case '2x': //functions from module
 		if (isNumber(valuesFromButtons[valuesFromButtons.length - 1])) {
-			sqNt({currentValue, valuesFromButtons, n:0.5});
+			findLastNumber(valuesFromButtons);
+			sqNt({ currentValue, valuesFromButtons, n: 0.5 });
 		} else {
 			valuesFromButtons.splice(valuesFromButtons.length - 1, 1);
-			sqNt({currentValue, valuesFromButtons, n:0.5});
+			findLastNumber(valuesFromButtons);
+			sqNt({ currentValue, valuesFromButtons, n: 0.5 });
 		}
 		break;
 
 	case '3x': //functions from module
 		if (isNumber(valuesFromButtons[valuesFromButtons.length - 1])) {
-			sqNt({currentValue, valuesFromButtons, n:1/3});
+			findLastNumber(valuesFromButtons);
+			sqNt({ currentValue, valuesFromButtons, n: 1 / 3 });
 		} else {
 			valuesFromButtons.splice(valuesFromButtons.length - 1, 1);
-			sqNt({currentValue, valuesFromButtons, n:1/3});
+			findLastNumber(valuesFromButtons);
+			sqNt({ currentValue, valuesFromButtons, n: 1 / 3 });
 		}
 		break;
-	
+
 	case 'nx': //functions from module
-		
 		for (const button of buttons) {
 			button.removeEventListener('click', listinerForButton);
-		};
+		}
 
 		window.removeEventListener('keydown', listinerForKeyButton);
 
-		function _listinerForButton () {
+		function _listinerForButton() {
 			const key = this.getAttribute('data-key');
 			if (isNumber(key)) {
-				sqNt({currentValue, valuesFromButtons, n:key});
+				sqNt({ currentValue, valuesFromButtons, n: 1 / key });
 
 				showExpressionInScoreboard();
-				
+
 				for (const button of buttons) {
 					button.removeEventListener('click', _listinerForButton);
 					button.addEventListener('click', listinerForButton);
-				};
+				}
 			}
 		}
 
-		function _listinerForKeyButton (e) {
+		function _listinerForKeyButton(e) {
 			if (isNumber(e.key)) {
 				sqNt({
 					currentValue,
 					valuesFromButtons,
-					n:e.key
+					n: 1 / e.key,
 				});
 
 				showExpressionInScoreboard();
@@ -162,33 +190,120 @@ const addSignToExpression = key => {
 		}
 		window.addEventListener('keydown', _listinerForKeyButton);
 
-
 		for (const button of buttons) {
 			button.addEventListener('click', _listinerForButton);
-		};
+		}
 
 		break;
 
+	case 'ln':
+		findLastNumber(valuesFromButtons);
+		ln({valuesFromButtons});
+		break;
+
+	case 'log10':
+		if (isNumber(valuesFromButtons[valuesFromButtons.length - 1])) {
+			findLastNumber(valuesFromButtons);
+			log10({valuesFromButtons});
+		} else {
+			valuesFromButtons.splice(valuesFromButtons.length - 1, 1);
+			findLastNumber(valuesFromButtons);
+			log10({valuesFromButtons});
+		}
+		break;
 
 	case 'x2': //functions from module
 		if (isNumber(valuesFromButtons[valuesFromButtons.length - 1])) {
-			sqNt({currentValue, valuesFromButtons, n:2});
+			findLastNumber(valuesFromButtons);
+			sqNt({ currentValue, valuesFromButtons, n: 2 });
 		} else {
 			valuesFromButtons.splice(valuesFromButtons.length - 1, 1);
-			sqNt({currentValue, valuesFromButtons, n:2});
+			findLastNumber(valuesFromButtons);
+			sqNt({ currentValue, valuesFromButtons, n: 2 });
 		}
 		break;
 
 	case 'x3': //functions from module
 		if (isNumber(valuesFromButtons[valuesFromButtons.length - 1])) {
-			sqNt({currentValue, valuesFromButtons, n:3});
+			findLastNumber(valuesFromButtons);
+			sqNt({ currentValue, valuesFromButtons, n: 3 });
 		} else {
 			valuesFromButtons.splice(valuesFromButtons.length - 1, 1);
-			sqNt({currentValue, valuesFromButtons, n:3});
+			findLastNumber(valuesFromButtons);
+			sqNt({ currentValue, valuesFromButtons, n: 3 });
 		}
+		break;
+
+	case 'xy':
+		for (const button of buttons) {
+			button.removeEventListener('click', listinerForButton);
+		}
+
+		window.removeEventListener('keydown', listinerForKeyButton);
+
+		function _listinerForButton2() {
+			const key = this.getAttribute('data-key');
+			if (isNumber(key)) {
+				sqNt({ currentValue, valuesFromButtons, n: key });
+
+				showExpressionInScoreboard();
+
+				for (const button of buttons) {
+					button.removeEventListener('click', _listinerForButton2);
+					button.addEventListener('click', listinerForButton);
+				}
+			}
+		}
+
+		function _listinerForKeyButton2(e) {
+			if (isNumber(e.key)) {
+				sqNt({
+					currentValue,
+					valuesFromButtons,
+					n: e.key,
+				});
+
+				showExpressionInScoreboard();
+				window.removeEventListener('keydown', _listinerForKeyButton2);
+				window.addEventListener('keydown', listinerForKeyButton);
+			}
+		}
+		window.addEventListener('keydown', _listinerForKeyButton2);
+
+		for (const button of buttons) {
+			button.addEventListener('click', _listinerForButton2);
+		}
+
+		break;
+
+	case 'ex': //functions from module
+		if (isNumber(valuesFromButtons[valuesFromButtons.length - 1])) {
+			findLastNumber(valuesFromButtons);
+			expInDegree({ valuesFromButtons });
+		} else {
+			valuesFromButtons.splice(valuesFromButtons.length - 1, 1);
+			findLastNumber(valuesFromButtons);
+			expInDegree({ valuesFromButtons });
+		}
+		break;
+
+	case '10x': //functions from module
+		if (isNumber(valuesFromButtons[valuesFromButtons.length - 1])) {
+			findLastNumber(valuesFromButtons);
+			tenInX({ valuesFromButtons });
+		} else {
+			valuesFromButtons.splice(valuesFromButtons.length - 1, 1);
+			findLastNumber(valuesFromButtons);
+			tenInX({ valuesFromButtons });
+		}
+		break;
+
+	case 'Backspace':
+		backspace({valuesFromButtons});
 		break;
 
 	default:
 		break;
 	}
+	console.log(key);
 };
