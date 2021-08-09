@@ -21,6 +21,7 @@ style.css       | style sheet file
 modules.js      | Functions which used in expression
 modules.test.js | Functions tests
 script.js       | Main script file
+index.html      | Html file
 #### How to use
 Download the last version from GitHub.
 Use terminal
