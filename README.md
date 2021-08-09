@@ -33,8 +33,7 @@ Use terminal
 ```html
 <div class="calc_wrapper white">
 ```
-![black](https://user-images.githubusercontent.com/88325741/128724158-f45b2f7e-e383-474a-9c13-6087cb4fca66.png)
-
+![black](https://user-images.githubusercontent.com/88325741/128724791-747b1e0f-0417-4d48-a93a-d2e715cc0184.png)
 
 ![white](https://user-images.githubusercontent.com/88325741/128724287-cfea94f3-8138-4dd4-a7cf-89bc01c2fe12.png)
 
