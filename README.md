@@ -33,5 +33,10 @@ Use terminal
 ```html
 <div class="calc_wrapper white">
 ```
+![black](https://user-images.githubusercontent.com/88325741/128724158-f45b2f7e-e383-474a-9c13-6087cb4fca66.png)
+
+
+![white](https://user-images.githubusercontent.com/88325741/128724287-cfea94f3-8138-4dd4-a7cf-89bc01c2fe12.png)
+
 #### You can see it in web
 [Home page](https://docs.google.com/document/d/1j8DnTnRSNoRBdYtKu3Rgk1STLso4X5Rev2-oEyxMsK8/edit#heading=h.5dt3hghpa22f)
