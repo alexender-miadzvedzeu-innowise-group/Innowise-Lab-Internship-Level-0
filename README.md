@@ -57,4 +57,4 @@ And you'll take a black theme
 
 
 #### You can see it in web
-[Home page](https://docs.google.com/document/d/1j8DnTnRSNoRBdYtKu3Rgk1STLso4X5Rev2-oEyxMsK8/edit#heading=h.5dt3hghpa22f)
+[Home page](https://alexender-miadzvedzeu-innowise-group.github.io/Innowise-Lab-Internship-Level-0/)
