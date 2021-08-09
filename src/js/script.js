@@ -20,7 +20,7 @@ for (const button of buttons) {
 
 window.addEventListener('keydown', listinerForKeyButton);
 
-const isNumber = key => {
+export const isNumber = key => {
 	const numbers = [
 		'1', '2', '3',
 		'4', '5', '6',
@@ -48,12 +48,11 @@ const showExpressionInScoreboard = () => {
 	scoreboardValue.textContent = valuesFromButtons.join('');
 };
 
-export const makeExpression = key => {
+const makeExpression = key => {
 	isNumber(key) ? valuesFromButtons.push(key) : addSignToExpression(key);
-	
 };
 
-export const addSignToExpression = key => {
+const addSignToExpression = key => {
 
 	const checkPrewKeyInExpression = () => {
 
@@ -110,19 +109,19 @@ export const addSignToExpression = key => {
 
 	case '2x': //functions from module
 		if (isNumber(valuesFromButtons[valuesFromButtons.length - 1])) {
-			sqNt({currentValue, valuesFromButtons, isNumber, n:0.5});
+			sqNt({currentValue, valuesFromButtons, n:0.5});
 		} else {
 			valuesFromButtons.splice(valuesFromButtons.length - 1, 1);
-			sqNt({currentValue, valuesFromButtons, isNumber, n:0.5});
+			sqNt({currentValue, valuesFromButtons, n:0.5});
 		}
 		break;
 
 	case '3x': //functions from module
 		if (isNumber(valuesFromButtons[valuesFromButtons.length - 1])) {
-			sqNt({currentValue, valuesFromButtons, isNumber, n:1/3});
+			sqNt({currentValue, valuesFromButtons, n:1/3});
 		} else {
 			valuesFromButtons.splice(valuesFromButtons.length - 1, 1);
-			sqNt({currentValue, valuesFromButtons, isNumber, n:1/3});
+			sqNt({currentValue, valuesFromButtons, n:1/3});
 		}
 		break;
 	
@@ -137,7 +136,7 @@ export const addSignToExpression = key => {
 		function _listinerForButton () {
 			const key = this.getAttribute('data-key');
 			if (isNumber(key)) {
-				sqNt({currentValue, valuesFromButtons, isNumber, n:key});
+				sqNt({currentValue, valuesFromButtons, n:key});
 
 				showExpressionInScoreboard();
 				
@@ -153,7 +152,6 @@ export const addSignToExpression = key => {
 				sqNt({
 					currentValue,
 					valuesFromButtons,
-					isNumber,
 					n:e.key
 				});
 
@@ -174,19 +172,19 @@ export const addSignToExpression = key => {
 
 	case 'x2': //functions from module
 		if (isNumber(valuesFromButtons[valuesFromButtons.length - 1])) {
-			sqNt({currentValue, valuesFromButtons, isNumber, n:2});
+			sqNt({currentValue, valuesFromButtons, n:2});
 		} else {
 			valuesFromButtons.splice(valuesFromButtons.length - 1, 1);
-			sqNt({currentValue, valuesFromButtons, isNumber, n:2});
+			sqNt({currentValue, valuesFromButtons, n:2});
 		}
 		break;
 
 	case 'x3': //functions from module
 		if (isNumber(valuesFromButtons[valuesFromButtons.length - 1])) {
-			sqNt({currentValue, valuesFromButtons, isNumber, n:3});
+			sqNt({currentValue, valuesFromButtons, n:3});
 		} else {
 			valuesFromButtons.splice(valuesFromButtons.length - 1, 1);
-			sqNt({currentValue, valuesFromButtons, isNumber, n:3});
+			sqNt({currentValue, valuesFromButtons, n:3});
 		}
 		break;
 
