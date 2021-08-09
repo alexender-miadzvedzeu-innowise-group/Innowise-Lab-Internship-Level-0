@@ -26,7 +26,7 @@
   "bugs": {
     "url": "https://github.com/alexender-miadzvedzeu-innowise-group/Innowise-Lab-Internship-Level-0/issues"
   },
-  "homepage": "https://github.com/alexender-miadzvedzeu-innowise-group/Innowise-Lab-Internship-Level-0#readme",
+  "homepage": "https://alexender-miadzvedzeu-innowise-group.github.io/Innowise-Lab-Internship-Level-0/",
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.15.0",
     "@babel/preset-env": "^7.15.0",
@@ -36,6 +36,7 @@
     "css-loader": "^6.2.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
+    "gh-pages": "^3.2.3",
     "html-loader": "^2.1.2",
     "html-webpack-plugin": "^5.3.2",
     "html-webpack-plugin-remove": "^0.1.0",
