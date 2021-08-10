@@ -18,7 +18,11 @@ const scoreboardValue = document.querySelector('.value');
 
 function listinerForButton () {
 	const key = this.getAttribute('data-key');
-	isNumber(key) || valuesFromButtons.length !== 0 ? calc(key) : null;
+	if (key == 'mr' || key == 'mc') {
+		addSignToExpression(key);
+	} else {
+		isNumber(key) || valuesFromButtons.length !== 0 ? calc(key) : null;
+	}
 }
 
 function listinerForKeyButton (e) {
@@ -63,7 +67,7 @@ const addSignToExpression = key => {
 
 		const prewKey = valuesFromButtons[valuesFromButtons.length - 1];
 		
-		if (!isNumber(prewKey)) {
+		if (!isNumber(prewKey) && prewKey !== ')') {
 			valuesFromButtons[valuesFromButtons.length - 1] = key;
 		} else {
 			valuesFromButtons.push(key);
@@ -114,7 +118,6 @@ const addSignToExpression = key => {
 			valuesFromButtons = [];
 			valuesFromButtons.push(currentValue);
 			valuesFromButtons = valuesFromButtons.join('').split('');
-			currentValue = '';
 		} else {
 			showExpressionInScoreboard();
 		};
@@ -302,8 +305,23 @@ const addSignToExpression = key => {
 		backspace({valuesFromButtons});
 		break;
 
+	case 'mc':
+		sessionStorage.num = 0;
+		break;
+
+	case 'm+':
+		sessionStorage.num = sessionStorage.num * 1 + currentValue;
+		break;
+	
+	case 'm-':
+		sessionStorage.num = sessionStorage.num * 1 - currentValue;
+		break;
+
+	case 'mr':
+		scoreboardValue.textContent = sessionStorage.num;
+		break;
+
 	default:
 		break;
 	}
-	console.log(key);
 };
