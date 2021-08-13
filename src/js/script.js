@@ -1,11 +1,13 @@
-import Calc from './fun.js';
+import SimpleFun from './simpleFun.js';
+import DiffFun from './diffFun.js';
 import '../css/style.css';
 
 const buttons = document.querySelectorAll('.buttons_wrapper__button');
 const scoreboardHistory = document.querySelector('.history');
 const scoreboardValue = document.querySelector('.value');
 
-const calc = new Calc();
+const calc = new SimpleFun();
+const diffFun = new DiffFun();
 
 const showCurrentValue = () => {
 	if (calc.valFromButtons.length > 1) {
@@ -44,10 +46,33 @@ for (const button of buttons) {
 		case '=':
 			calc.resultExpression();
 			break;
+		case 'x2':
+			if (calc.isNum(calc.valFromButtons[calc.valFromButtons.length - 1])) {
+				calc.updateLastNumInValFromButtons( diffFun.pow(calc.valFromButtons[calc.valFromButtons.length - 1], 2));
+				calc.currentResult = calc.valFromButtons[calc.valFromButtons.length - 1];
+			}
+			break;
+		case 'AC':
+			calc.currentResult = '';
+			calc.valFromButtons = [];
+			break;
+		case '+/-':
+			if (calc.isNum(calc.valFromButtons[calc.valFromButtons.length - 1])) {
+				calc.updateLastNumInValFromButtons(diffFun.changeSign(calc.valFromButtons[calc.valFromButtons.length - 1], 2));
+				calc.currentResult = calc.valFromButtons[calc.valFromButtons.length - 1];
+			}
+			break;
+		case '%':
+			if (calc.isNum(calc.valFromButtons[calc.valFromButtons.length - 1])) {
+				calc.updateLastNumInValFromButtons(diffFun.percent(calc.valFromButtons[calc.valFromButtons.length - 1], 2));
+				calc.currentResult = calc.valFromButtons[calc.valFromButtons.length - 1];
+			}
+			break;
 		default:
 			break;
 		}
 		showCurrentValue();
+		console.log(key);
 	};
 }
 
