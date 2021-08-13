@@ -21,7 +21,6 @@
 
 .calc_wrapper {
 	width: 70%;
-	/* min-width: 500px; */
 	margin: 3% auto 0;
 	overflow: hidden;
 	border-radius: 15px;
@@ -37,6 +36,10 @@
 	justify-content: flex-end;
 	font-size: 2rem;
 	color: #fff;
+}
+.calc_wrapper__scoreboard .history {
+	font-size: 1.5rem;
+	color: #fb9e0c;
 }
 .calc_wrapper__scoreboard .value {
 	margin-right: 5px;
