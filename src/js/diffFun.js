@@ -8,6 +8,15 @@ export default class DiffFun extends SimpleFun {
 		return -1 * num;
 	}
 	percent(num) {
-		return num*0.01;
+		return num * 0.01;
+	}
+	exp(num) {
+		return Math.exp(num);
+	}
+	ln(num) {
+		return Math.log(num);
+	}
+	log10(num) {
+		return Math.log10(num);
 	}
 }
