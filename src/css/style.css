@@ -21,7 +21,7 @@
 
 .calc_wrapper {
 	width: 70%;
-	/* min-width: 500px; */
+	max-width: 640px;
 	margin: 3% auto 0;
 	overflow: hidden;
 	border-radius: 15px;
@@ -38,19 +38,23 @@
 	font-size: 2rem;
 	color: #fff;
 }
+.calc_wrapper__scoreboard .history {
+	font-size: 1.5rem;
+	color: #fb9e0c;
+}
 .calc_wrapper__scoreboard .value {
 	margin-right: 5px;
 }
 .calc_wrapper__buttons_wrapper.eng {
-	width: 60%;
+	width: 50%;
 	display: grid;
-	grid-template-columns: repeat(6, 1fr);
+	grid-template-columns: repeat(4, 1fr);
 	grid-template-rows: repeat(5, 40px);
 	grid-gap: 2px;
 	margin-right: 1px;
 }
 .calc_wrapper__buttons_wrapper.sim {
-	width: 40%;
+	width: 50%;
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
 	grid-gap: 2px;
