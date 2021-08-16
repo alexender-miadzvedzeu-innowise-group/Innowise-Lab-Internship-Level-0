@@ -25,6 +25,8 @@ for (const button of buttons) {
 	button.onclick = (e) => {
 		const key = e.target.getAttribute('data-key');
 		switch (key) {
+		case 'nt':
+		case '^':
 		case '.':
 		case '/':
 		case '*':
@@ -70,6 +72,12 @@ for (const button of buttons) {
 				calc.currentResult = calc.valFromButtons[calc.valFromButtons.length - 1];
 			}
 			break;
+		case '1x':
+			if (calc.isNum(calc.valFromButtons[calc.valFromButtons.length - 1])) {
+				calc.updateLastNumInValFromButtons( calc.revMult(calc.valFromButtons[calc.valFromButtons.length - 1]));
+				calc.currentResult = calc.valFromButtons[calc.valFromButtons.length - 1];
+			}
+			break;
 		case 'AC':
 			calc.currentResult = '';
 			calc.valFromButtons = [];
@@ -110,14 +118,30 @@ for (const button of buttons) {
 				calc.currentResult = calc.valFromButtons[calc.valFromButtons.length - 1];
 			}
 			break;
+		case 'mc':
+			if (calc.isNum(calc.currentResult) && calc.valFromButtons.length == 0 ) {
+				calc.memoriseClear();
+			}
+			break;
+		case 'm+':
+			if (calc.isNum(calc.currentResult) && calc.valFromButtons.length == 0 ) {
+				calc.memoriseSum();
+			}
+			break;
+		case 'm-':
+			if (calc.isNum(calc.currentResult) && calc.valFromButtons.length == 0 ) {
+				calc.memoriseMinus();
+			}
+			break;
+		case 'mr':
+			calc.makeExpr(calc.memoriseNum);
+			break;
+		case 'Backspace':
+			calc.del();
+			break;
 		default:
 			break;
 		}
 		showCurrentValue();
-		console.log(key);
 	};
-}
-
-window.calc = calc;
-
-
+};

@@ -2,6 +2,7 @@ export default class SimpleFun {
 	constructor() {
 		this.valFromButtons = [];
 		this.currentResult = 0;
+		this.memoriseNum = 0;
 	}
 
 	sum(a, b) {
@@ -16,19 +17,52 @@ export default class SimpleFun {
 		return a * b;
 	}
 
+	revMult(a) {
+		return 1 / a;
+	}
+
 	divide(a, b) {
-		if (b !== 0) {
-			return a / b;
-		} else return new Error('на ноль делить нельзя!');
+		return a / b;
 	}
 
 	isNum(key) {
 		const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+		typeof key === 'number' ? key = key.toString() : null;
 		return numbers.includes(key[key.length - 1]);
+	}
+
+	del() {
+		this.valFromButtons.splice(this.valFromButtons.length - 1, 1);
+		this.currentResult = this.valFromButtons[this.valFromButtons.length - 1];
+	}
+
+	memoriseSum() {
+		this.memoriseNum += this.currentResult;
+	}
+
+	memoriseMinus() {
+		this.memoriseNum -= this.currentResult;
+	}
+
+	memoriseClear() {
+		this.memoriseNum = 0;
 	}
 
 	makeExpr(key) {
 		if (
+			key == 0 &&
+			this.valFromButtons[this.valFromButtons.length - 1] ==='/'
+		) {
+			alert('На ноль делить нельзя');
+		} else if (
+			key ==  '.' &&
+			this.isNum(this.valFromButtons[this.valFromButtons.length - 1]) ||
+			this.valFromButtons.length !== 0 &&
+			this.valFromButtons[this.valFromButtons.length - 1].endsWith('.') &&
+			this.isNum(key)
+		) {
+			this.valFromButtons[this.valFromButtons.length - 1] += key;
+		} else if (
 			this.valFromButtons.length !== 0 &&
 			this.isNum(this.valFromButtons[this.valFromButtons.length - 1]) &&
 			!this.isNum(key)
@@ -55,7 +89,7 @@ export default class SimpleFun {
 			this.valFromButtons[this.valFromButtons.length - 1] += key;
 		} else if (this.valFromButtons.length === 0 && this.isNum(key)) {
 			this.valFromButtons.push(key);
-		}
+		} 
 		this.currentResult = this.valFromButtons[this.valFromButtons.length - 1];
 	}
 
@@ -69,6 +103,14 @@ export default class SimpleFun {
 				break;
 			case '*':
 				arr[i] = this.mult(arr[i - 1], arr[i + 1]);
+				arr[i - 1] = arr[i + 1] = '';
+				break;
+			case '^':
+				arr[i] = Math.pow(arr[i - 1], arr[i + 1]);
+				arr[i - 1] = arr[i + 1] = '';
+				break;
+			case 'nt':
+				arr[i] = Math.pow(arr[i - 1], 1 / arr[i + 1]);
 				arr[i - 1] = arr[i + 1] = '';
 				break;
 			default:
