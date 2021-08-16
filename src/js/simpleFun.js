@@ -50,11 +50,6 @@ export default class SimpleFun {
 
 	makeExpr(key) {
 		if (
-			key == 0 &&
-			this.valFromButtons[this.valFromButtons.length - 1] ==='/'
-		) {
-			alert('На ноль делить нельзя');
-		} else if (
 			key ==  '.' &&
 			this.isNum(this.valFromButtons[this.valFromButtons.length - 1]) ||
 			this.valFromButtons.length !== 0 &&
@@ -98,8 +93,12 @@ export default class SimpleFun {
 		for (let i = 0; i < arr.length; i++) {
 			switch (arr[i]) {
 			case '/':
-				arr[i] = this.divide(arr[i - 1], arr[i + 1]);
-				arr[i - 1] = arr[i + 1] = '';
+				if (arr[i + 1] != 0) {
+					arr[i] = this.divide(arr[i - 1], arr[i + 1]);
+					arr[i - 1] = arr[i + 1] = '';
+				} else {
+					return alert('На ноль делить нельзя');
+				}
 				break;
 			case '*':
 				arr[i] = this.mult(arr[i - 1], arr[i + 1]);
