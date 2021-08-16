@@ -11,8 +11,7 @@ const diffFun = new DiffFun();
 
 const showCurrentValue = () => {
 	if (calc.valFromButtons.length > 1) {
-		let historyArr = [...calc.valFromButtons];
-		let history = historyArr.splice(0, historyArr.length - 1).join('');
+		let history = [...calc.valFromButtons].splice(0, [...calc.valFromButtons].length - 1).join('');
 		scoreboardHistory.textContent = history;
 		scoreboardValue.textContent = calc.currentResult;
 	} else {
@@ -145,5 +144,3 @@ for (const button of buttons) {
 		showCurrentValue();
 	};
 };
-
-window.calc = calc;

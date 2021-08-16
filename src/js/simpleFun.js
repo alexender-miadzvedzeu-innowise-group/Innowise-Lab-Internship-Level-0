@@ -117,8 +117,7 @@ export default class SimpleFun {
 			}
 		}
 
-		let filterdArr = arr.filter((el) => el.toString().length > 0);
-		arr = filterdArr;
+		arr = [...arr].filter((el) => el.toString().length > 0);
 		for (let i = 0; i < arr.length; i++) {
 			switch (arr[i]) {
 			case '-':
@@ -134,8 +133,7 @@ export default class SimpleFun {
 			}
 		}
 
-		filterdArr = arr.filter((el) => el.toString().length > 0);
-		arr = filterdArr;
+		arr = [...arr].filter((el) => el.toString().length > 0);
 		let result = 0;
 
 		for (const el of arr) {
