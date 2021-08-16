@@ -145,3 +145,5 @@ for (const button of buttons) {
 		showCurrentValue();
 	};
 };
+
+window.calc = calc;
