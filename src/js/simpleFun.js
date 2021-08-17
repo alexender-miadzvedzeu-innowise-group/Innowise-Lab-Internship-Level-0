@@ -31,8 +31,13 @@ export default class SimpleFun {
 	}
 
 	del() {
-		this.valFromButtons.splice(this.valFromButtons.length - 1, 1);
-		this.currentResult = this.valFromButtons[this.valFromButtons.length - 1];
+		if (this.valFromButtons[this.valFromButtons.length - 1].length > 1) {
+			this.valFromButtons[this.valFromButtons.length - 1] = this.valFromButtons[this.valFromButtons.length - 1].substring(0, this.valFromButtons[this.valFromButtons.length - 1].length - 1);
+			this.currentResult = this.valFromButtons[this.valFromButtons.length - 1];
+		} else {
+			this.valFromButtons.splice(this.valFromButtons.length - 1, 1);
+			this.currentResult = this.valFromButtons[this.valFromButtons.length - 1];
+		}
 	}
 
 	memoriseSum() {
@@ -105,7 +110,7 @@ export default class SimpleFun {
 		this.currentResult = this.valFromButtons[this.valFromButtons.length - 1];
 	}
 
-	executeExpression(arr = this.valFromButtons) {
+	_executeExpression(arr = this.valFromButtons) {
 		!this.isNum(arr[arr.length - 1]) ? arr.splice([arr.length - 1], 1) : null;
 		for (let i = 0; i < arr.length; i++) {
 			switch (arr[i]) {
@@ -171,12 +176,12 @@ export default class SimpleFun {
 			} else if (arr[i] === ')') {
 				to = i;
 				arrInParentheses = [...arr].splice(from + 1, to - from - 1);
-				arr[from] = this.executeExpression(arrInParentheses).toString();
+				arr[from] = this._executeExpression(arrInParentheses).toString();
 				arr.fill('', from + 1, to + 1);
 			}
 		}
 		arr = [...arr].filter((el) => el.toString().length > 0);
-		return this.executeExpression(arr);
+		return this._executeExpression(arr);
 	}
 
 	updateLastNumInValFromButtons(num) {

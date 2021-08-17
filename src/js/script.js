@@ -148,4 +148,3 @@ for (const button of buttons) {
 };
 
 window.calc = calc;
-
