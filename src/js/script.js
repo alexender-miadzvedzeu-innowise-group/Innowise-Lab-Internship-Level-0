@@ -24,6 +24,8 @@ for (const button of buttons) {
 	button.onclick = (e) => {
 		const key = e.target.getAttribute('data-key');
 		switch (key) {
+		case '(':
+		case ')':
 		case 'nt':
 		case '^':
 		case '.':
@@ -45,7 +47,7 @@ for (const button of buttons) {
 			calc.makeExpr(key);
 			break;
 		case '=':
-			calc.resultExpression();
+			calc.executeExpressionWithParentheses();
 			break;
 		case 'x2':
 			if (calc.isNum(calc.valFromButtons[calc.valFromButtons.length - 1])) {
@@ -144,3 +146,6 @@ for (const button of buttons) {
 		showCurrentValue();
 	};
 };
+
+window.calc = calc;
+
