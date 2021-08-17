@@ -4,9 +4,16 @@ export default class SimpleFun {
 		this.currentResult = 0;
 		this.memoriseNum = 0;
 		this.numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
-		this.lastElemInValues = this.valFromButtons[this.valFromButtons.length - 1];
 	}
-
+	lastElemInValues(arr = this.valFromButtons) {
+		return arr.length > 0 ? [...arr].pop() : null;
+	}
+	setLastElemInValues(elem) {
+		return this.valFromButtons[this.valFromButtons.length - 1] = elem;
+	}
+	udateLastElemInValues(elem) {
+		return this.valFromButtons[this.valFromButtons.length - 1] += elem;
+	}
 	sum(a, b) {
 		return Number(a) + Number(b);
 	}
@@ -32,12 +39,12 @@ export default class SimpleFun {
 	}
 
 	del() {
-		if (this.valFromButtons[this.valFromButtons.length - 1].length > 1) {
-			this.valFromButtons[this.valFromButtons.length - 1] = this.valFromButtons[this.valFromButtons.length - 1].substring(0, this.valFromButtons[this.valFromButtons.length - 1].length - 1);
-			this.currentResult = this.valFromButtons[this.valFromButtons.length - 1];
+		if (this.lastElemInValues().length > 1) {
+			this.setLastElemInValues(this.lastElemInValues().substring(0, this.lastElemInValues().length - 1));
+			this.currentResult = this.lastElemInValues();
 		} else {
 			this.valFromButtons.splice(this.valFromButtons.length - 1, 1);
-			this.currentResult = this.valFromButtons[this.valFromButtons.length - 1];
+			this.currentResult = this.lastElemInValues();
 		}
 	}
 
@@ -57,39 +64,39 @@ export default class SimpleFun {
 		if (
 			// ["0"] + "." => ["0."]
 			// ["0."] + isNum(5) => ["0.5"]
-			(key === '.' && this.isNum(this.valFromButtons[this.valFromButtons.length - 1])) ||
-			(this.valFromButtons.length !== 0 && this.valFromButtons[this.valFromButtons.length - 1].endsWith('.') && this.isNum(key))
+			(key === '.' && this.isNum(this.lastElemInValues())) ||
+			(this.valFromButtons.length !== 0 && this.lastElemInValues().endsWith('.') && this.isNum(key))
 		) {
-			this.valFromButtons[this.valFromButtons.length - 1] += key;
+			this.udateLastElemInValues(key);
 		} else if (
 			// ["2"] + !isNum("+") => ["2", "+"]
 			// [..."6", "+"] + !isNum("(") => [..."6", "+", "("]
 			// [..."6", ")"] + !isNum("+") => [..."6", ")", "+"]
-			(this.valFromButtons.length !== 0 && this.isNum(this.valFromButtons[this.valFromButtons.length - 1]) && !this.isNum(key) && key !== '(') ||
-			(this.valFromButtons.length !== 0 && !this.isNum(this.valFromButtons[this.valFromButtons.length - 1]) && key === '(') ||
-			(this.valFromButtons.length !== 0 && this.valFromButtons[this.valFromButtons.length - 1] === ')' && !this.isNum(key))
+			(this.valFromButtons.length !== 0 && this.isNum(this.lastElemInValues()) && !this.isNum(key) && key !== '(') ||
+			(this.valFromButtons.length !== 0 && !this.isNum(this.lastElemInValues()) && key === '(') ||
+			(this.valFromButtons.length !== 0 && this.lastElemInValues() === ')' && !this.isNum(key))
 		) {
 			this.valFromButtons.push(key);
 		} else if (
 			// ["(", "5", "*", "8", ")"] + isNum("6") =>  ["5", "+", "(", "5", "*", "8", "6"]
 			this.valFromButtons.length !== 0 &&
-			!this.isNum(this.valFromButtons[this.valFromButtons.length - 1]) &&
-			this.valFromButtons[this.valFromButtons.length - 1] === ')' &&
+			!this.isNum(this.lastElemInValues()) &&
+			this.lastElemInValues() === ')' &&
 			this.isNum(key)
 		) {
-			this.valFromButtons[this.valFromButtons.length - 1] = key;
+			this.setLastElemInValues(key);
 		} else if (
 			//  ["2", "+"] + isNum(key) =>  ["2", "+", "5"]
 			this.valFromButtons.length !== 0 &&
-			!this.isNum(this.valFromButtons[this.valFromButtons.length - 1]) &&
+			!this.isNum(this.lastElemInValues()) &&
 			this.isNum(key)
 		) {
 			this.valFromButtons.push(key);
 		} else if (
 			// ["5", "+"] + !isNum("*") => ["5", "*"]
 			this.valFromButtons.length !== 0 &&
-			!this.isNum(this.valFromButtons[this.valFromButtons.length - 1]) &&
-			this.valFromButtons[this.valFromButtons.length - 1] !== ')' &&
+			!this.isNum(this.lastElemInValues()) &&
+			this.lastElemInValues() !== ')' &&
 			!this.isNum(key)
 		) {
 			this.valFromButtons.splice(this.valFromButtons.length - 1, 1);
@@ -97,18 +104,21 @@ export default class SimpleFun {
 		} else if (
 			// ["2", "+", "5"] + isNum(6) => ["2", "+", "56"]
 			this.valFromButtons.length !== 0 &&
-			this.isNum(this.valFromButtons[this.valFromButtons.length - 1]) &&
+			this.isNum(this.lastElemInValues()) &&
 			this.isNum(key)
 		) {
-			this.valFromButtons[this.valFromButtons.length - 1] += key;
+			this.udateLastElemInValues(key);
 		} else if (
 			// [] + isNum(1) => ["1"]
+			// [] + '('
 			this.valFromButtons.length === 0 &&
-			this.isNum(key)
+			this.isNum(key) ||
+			this.valFromButtons.length === 0 &&
+			key === '('
 		) {
 			this.valFromButtons.push(key);
 		}
-		this.currentResult = this.valFromButtons[this.valFromButtons.length - 1];
+		this.currentResult = this.lastElemInValues();
 	}
 
 	_clearArr(arr) {
@@ -164,9 +174,10 @@ export default class SimpleFun {
 
 		this.currentResult = 0;
 
-		arr.forEach(el => this.currentResult += Number(el));
+		arr.forEach((el) => (this.currentResult += Number(el)));
 
 		this.valFromButtons = [];
+		this.valFromButtons.push(this.currentResult.toString());
 		return this.currentResult;
 	}
 
@@ -185,6 +196,7 @@ export default class SimpleFun {
 			}
 		}
 		arr = this._clearArr(arr);
+		
 		return this._executeExpression(arr);
 	}
 

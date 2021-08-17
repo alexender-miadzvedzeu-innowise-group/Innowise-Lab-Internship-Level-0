@@ -33,3 +33,7 @@ test('executeExpressionWithParentheses test', () => {
 test('executeExpressionWithParentheses test', () => {
 	expect(calc.executeExpressionWithParentheses(['25', '*', '6', '+', '6', '-', '9', '*', '2', '+', '5', '*', '5'])).toBe(163);
 });
+
+test('executeExpressionWithParentheses test', () => {
+	expect(calc.executeExpressionWithParentheses(['2', '+', '6', '*', '3', '-', '2', '*', '(', '20', '+', '50', ')'])).toBe(-120);
+});
