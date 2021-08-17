@@ -26,12 +26,10 @@ test('_isNum test', () => {
 	expect(calc.isNum('dfg')).toBe(false);
 });
 
-test('resultExpression test', () => {
-	expect(calc.resultExpression(['2', '+', '2', '*', '2'])).toBe(6);
+test('executeExpressionWithParentheses test', () => {
+	expect(calc.executeExpressionWithParentheses(['2', '+', '2', '*', '2'])).toBe(6);
 });
 
-test('resultExpression test', () => {
-	expect(
-		calc.resultExpression(['25', '*', '6', '+', '6', '-', '9', '*', '2', '+', '5', '*', '5'])
-	).toBe(163);
+test('executeExpressionWithParentheses test', () => {
+	expect(calc.executeExpressionWithParentheses(['25', '*', '6', '+', '6', '-', '9', '*', '2', '+', '5', '*', '5'])).toBe(163);
 });

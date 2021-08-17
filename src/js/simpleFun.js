@@ -4,6 +4,7 @@ export default class SimpleFun {
 		this.currentResult = 0;
 		this.memoriseNum = 0;
 		this.numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+		this.lastElemInValues = this.valFromButtons[this.valFromButtons.length - 1];
 	}
 
 	sum(a, b) {
@@ -27,7 +28,7 @@ export default class SimpleFun {
 	}
 
 	isNum(key) {
-		return this.numbers.includes(key.toString()[key.length - 1]);
+		return this.numbers.includes(key.toString()[key.toString().length - 1]);
 	}
 
 	del() {
@@ -110,6 +111,9 @@ export default class SimpleFun {
 		this.currentResult = this.valFromButtons[this.valFromButtons.length - 1];
 	}
 
+	_clearArr(arr) {
+		return [...arr].filter((el) => el.toString().length > 0);
+	}
 	_executeExpression(arr = this.valFromButtons) {
 		!this.isNum(arr[arr.length - 1]) ? arr.splice([arr.length - 1], 1) : null;
 		for (let i = 0; i < arr.length; i++) {
@@ -139,7 +143,8 @@ export default class SimpleFun {
 			}
 		}
 
-		arr = [...arr].filter((el) => el.toString().length > 0);
+		arr = this._clearArr(arr);
+
 		for (let i = 0; i < arr.length; i++) {
 			switch (arr[i]) {
 			case '-':
@@ -155,15 +160,14 @@ export default class SimpleFun {
 			}
 		}
 
-		arr = [...arr].filter((el) => el.toString().length > 0);
-		let result = 0;
+		arr = this._clearArr(arr);
 
-		for (const el of arr) {
-			result += el * 1;
-		}
-		this.currentResult = result;
+		this.currentResult = 0;
+
+		arr.forEach(el => this.currentResult += Number(el));
+
 		this.valFromButtons = [];
-		return result;
+		return this.currentResult;
 	}
 
 	executeExpressionWithParentheses(arr = this.valFromButtons) {
@@ -180,7 +184,7 @@ export default class SimpleFun {
 				arr.fill('', from + 1, to + 1);
 			}
 		}
-		arr = [...arr].filter((el) => el.toString().length > 0);
+		arr = this._clearArr(arr);
 		return this._executeExpression(arr);
 	}
 

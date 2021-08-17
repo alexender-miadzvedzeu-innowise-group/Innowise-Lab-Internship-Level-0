@@ -120,17 +120,17 @@ for (const button of buttons) {
 			}
 			break;
 		case 'mc':
-			if (calc.isNum(calc.currentResult) && calc.valFromButtons.length == 0 ) {
+			if (calc.isNum(calc.currentResult) && calc.valFromButtons.length === 0 ) {
 				calc.memoriseClear();
 			}
 			break;
 		case 'm+':
-			if (calc.isNum(calc.currentResult) && calc.valFromButtons.length == 0 ) {
+			if (calc.isNum(calc.currentResult) && calc.valFromButtons.length === 0 ) {
 				calc.memoriseSum();
 			}
 			break;
 		case 'm-':
-			if (calc.isNum(calc.currentResult) && calc.valFromButtons.length == 0 ) {
+			if (calc.isNum(calc.currentResult) && calc.valFromButtons.length === 0 ) {
 				calc.memoriseMinus();
 			}
 			break;
@@ -148,3 +148,5 @@ for (const button of buttons) {
 };
 
 window.calc = calc;
+
+//["25", "*", "6", "+", "6", "-", "9", "*", "2", "+", "5", "*", "5"]
