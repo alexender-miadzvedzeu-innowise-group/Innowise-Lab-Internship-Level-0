@@ -6,11 +6,11 @@ export default class SimpleFun {
 	}
 
 	sum(a, b) {
-		return a * 1 + b * 1;
+		return Number(a) + Number(b);
 	}
 
 	minus(a, b) {
-		return a * 1 - b * 1;
+		return Number(a) - Number(b);
 	}
 
 	mult(a, b) {
@@ -26,6 +26,7 @@ export default class SimpleFun {
 	}
 
 	isNum(key) {
+		// return key.toString().length === 1 && !isNaN(key);
 		const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
 		typeof key === 'number' ? key = key.toString() : null;
 		return numbers.includes(key[key.length - 1]);
