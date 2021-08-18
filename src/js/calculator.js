@@ -3,7 +3,6 @@ export default class Calculator {
 		this.valFromButtons = [];
 		this.currentResult = 0;
 		this.memoriseNum = 0;
-		this.numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
 	}
 	lastElemInValues(arr = this.valFromButtons) {
 		return arr.length > 0 ? [...arr].pop() : [];
@@ -54,9 +53,8 @@ export default class Calculator {
 	}
 
 	isNum(key) {
-		return this.numbers.includes(key.toString()[key.toString().length - 1]);
+		return !isNaN(key.toString()[key.toString().length - 1]);
 	}
-	
 
 	del() {
 		if (this.lastElemInValues().length > 1) {
@@ -238,14 +236,12 @@ export default class Calculator {
 				from = i;
 			} else if (arr[i] === ')') {
 				to = i;
-				// splice()
-				arrInParentheses = [...arr].splice(from + 1, to - from - 1);
-				// splice()
+				arrInParentheses = arr.slice(from + 1, to);
 				arr[from] = this._executeExpression(arrInParentheses).toString();
 				arr.fill('', from + 1, to + 1);
 			}
 		}
-		//Возвращать всегда НОВЫЙ массив
+
 		arr = this._clearArr(arr);
 		
 		return this._executeExpression(arr);
@@ -255,13 +251,3 @@ export default class Calculator {
 		this.valFromButtons[this.valFromButtons.length - 1] = num.toString();
 	}
 }
-
-
-// валидация Сколбок  - ok
-// splice() => slice()
-// возвращаять НОВЫЙ массив или копию
-// isNaN!!!!isNum() избавиться от is numbers
-// for of заменить на forEach
-// соединить классы
-// вынести обработчик из index.js
-// избавиться от диструктуризации где не надо

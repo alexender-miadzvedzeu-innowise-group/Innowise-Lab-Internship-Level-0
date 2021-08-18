@@ -18,7 +18,6 @@ test('mult test', () => {
 	expect(calc.divide(10, 4)).toBe(2.5);
 });
 
-
 test('pow test', () => {
 	expect(calc.pow(10, 4)).toBe(10000);
 });
@@ -73,6 +72,18 @@ test('_isNum test', () => {
 
 test('_isNum test', () => {
 	expect(calc.isNum('dfg')).toBe(false);
+});
+
+test('_isNum test', () => {
+	expect(calc.isNum('0.')).toBe(false);
+});
+
+test('_isNum test', () => {
+	expect(calc.isNum('0.2')).toBe(true);
+});
+
+test('_isNum test', () => {
+	expect(calc.isNum('100500')).toBe(true);
 });
 
 test('executeExpressionWithParentheses test', () => {
