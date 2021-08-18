@@ -11,7 +11,9 @@ const diffFun = new DiffFun();
 
 const showCurrentValue = () => {
 	if (calc.valFromButtons.length > 1) {
+		//заменить на slice()
 		let history = [...calc.valFromButtons].splice(0, [...calc.valFromButtons].length - 1).join('');
+		//заменить на slice()
 		scoreboardHistory.textContent = history;
 		scoreboardValue.textContent = calc.currentResult;
 	} else {
@@ -20,12 +22,15 @@ const showCurrentValue = () => {
 	}
 };
 
-for (const button of buttons) {
+for (const button of buttons) { // использовать forEach
+	//вынести в отдельный файл
 	button.onclick = (e) => {
 		const key = e.target.getAttribute('data-key');
 		switch (key) {
 		case '(':
 		case ')':
+			calc.bracketsValidation(undefined, key) ? calc.makeExpr(key) : null;
+			break;
 		case 'nt':
 		case '^':
 		case '.':
@@ -145,4 +150,11 @@ for (const button of buttons) {
 		}
 		showCurrentValue();
 	};
+};
+
+
+window.calc = calc;
+window.onload = () => {
+	calc.currentResult = calc.lastElemInValues();
+	showCurrentValue();
 };

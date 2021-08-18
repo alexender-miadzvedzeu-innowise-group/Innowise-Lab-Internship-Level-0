@@ -6,7 +6,7 @@ export default class SimpleFun {
 		this.numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
 	}
 	lastElemInValues(arr = this.valFromButtons) {
-		return arr.length > 0 ? [...arr].pop() : null;
+		return arr.length > 0 ? [...arr].pop() : [];
 	}
 	setLastElemInValues(elem) {
 		return this.valFromButtons[this.valFromButtons.length - 1] = elem;
@@ -58,6 +58,34 @@ export default class SimpleFun {
 
 	memoriseClear() {
 		this.memoriseNum = 0;
+	}
+
+	bracketsValidation(arr = this.valFromButtons, key) {
+		switch (key) {
+		case '(':
+			return arr.filter(el => el === '(' || el === ')').every((el, key, array) => {
+				if (
+					array.length % 2 === 0 &&
+					key % 2 === 0 && array[key] === '(' ||
+					key % 2 !== 0 && array[key] === ')'
+				) {
+					return true;
+				} else false;
+			});
+		case ')':
+			return arr.filter(el => el === '(' || el === ')').every((el, key, array) => {
+				if (
+					array.length % 2 !== 0 &&
+					key % 2 === 0 && array[key] === '(' ||
+					key % 2 !== 0 && array[key] === ')'
+				) {
+					return true;
+				} else false;
+			});
+		default:
+			false;
+			break;
+		}
 	}
 
 	makeExpr(key) {
@@ -122,7 +150,7 @@ export default class SimpleFun {
 	}
 
 	_clearArr(arr) {
-		return [...arr].filter((el) => el.toString().length > 0);
+		return arr.filter((el) => el.toString().length > 0);
 	}
 	_executeExpression(arr = this.valFromButtons) {
 		!this.isNum(arr[arr.length - 1]) ? arr.splice([arr.length - 1], 1) : null;
@@ -190,11 +218,14 @@ export default class SimpleFun {
 				from = i;
 			} else if (arr[i] === ')') {
 				to = i;
+				// splice()
 				arrInParentheses = [...arr].splice(from + 1, to - from - 1);
+				// splice()
 				arr[from] = this._executeExpression(arrInParentheses).toString();
 				arr.fill('', from + 1, to + 1);
 			}
 		}
+		//Возвращать всегда НОВЫЙ массив
 		arr = this._clearArr(arr);
 		
 		return this._executeExpression(arr);
@@ -204,3 +235,13 @@ export default class SimpleFun {
 		this.valFromButtons[this.valFromButtons.length - 1] = num.toString();
 	}
 }
+
+
+// валидация Сколбок
+// splice() => slice()
+// возвращаять НОВЫЙ массив или копию
+// isNaN!!!!isNum() избавиться от is numbers
+// for of заменить на forEach
+// соединить классы
+// вынести обработчик из index.js
+// избавиться от диструктуризации где не надо
