@@ -1,4 +1,4 @@
-export default class SimpleFun {
+export default class Calculator {
 	constructor() {
 		this.valFromButtons = [];
 		this.currentResult = 0;
@@ -34,9 +34,29 @@ export default class SimpleFun {
 		return a / b;
 	}
 
+	pow(a, b) {
+		return Math.pow(a, b);
+	}
+	changeSign(num) {
+		return -1 * num;
+	}
+	percent(num) {
+		return num * 0.01;
+	}
+	exp(num) {
+		return Math.exp(num);
+	}
+	ln(num) {
+		return Math.log(num);
+	}
+	log10(num) {
+		return Math.log10(num);
+	}
+
 	isNum(key) {
 		return this.numbers.includes(key.toString()[key.toString().length - 1]);
 	}
+	
 
 	del() {
 		if (this.lastElemInValues().length > 1) {
@@ -237,7 +257,7 @@ export default class SimpleFun {
 }
 
 
-// валидация Сколбок
+// валидация Сколбок  - ok
 // splice() => slice()
 // возвращаять НОВЫЙ массив или копию
 // isNaN!!!!isNum() избавиться от is numbers

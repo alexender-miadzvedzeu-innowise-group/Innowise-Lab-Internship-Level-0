@@ -1,13 +1,11 @@
-import SimpleFun from './simpleFun.js';
-import DiffFun from './diffFun.js';
+import calculator from './calculator.js';
 import '../css/style.css';
 
 const buttons = document.querySelectorAll('.buttons_wrapper__button');
 const scoreboardHistory = document.querySelector('.history');
 const scoreboardValue = document.querySelector('.value');
 
-const calc = new SimpleFun();
-const diffFun = new DiffFun();
+const calc = new calculator();
 
 const showCurrentValue = () => {
 	if (calc.valFromButtons.length > 1) {
@@ -56,25 +54,25 @@ for (const button of buttons) { // использовать forEach
 			break;
 		case 'x2':
 			if (calc.isNum(calc.lastElemInValues())) {
-				calc.updateLastNumInValFromButtons(diffFun.pow(calc.lastElemInValues(), 2));
+				calc.updateLastNumInValFromButtons(calc.pow(calc.lastElemInValues(), 2));
 				calc.currentResult = calc.lastElemInValues();
 			}
 			break;
 		case 'x3':
 			if (calc.isNum(calc.lastElemInValues())) {
-				calc.updateLastNumInValFromButtons( diffFun.pow(calc.lastElemInValues(), 3));
+				calc.updateLastNumInValFromButtons(calc.pow(calc.lastElemInValues(), 3));
 				calc.currentResult = calc.lastElemInValues();
 			}
 			break;
 		case '2x':
 			if (calc.isNum(calc.lastElemInValues())) {
-				calc.updateLastNumInValFromButtons( diffFun.pow(calc.lastElemInValues(), 1/2));
+				calc.updateLastNumInValFromButtons(calc.pow(calc.lastElemInValues(), 1 / 2));
 				calc.currentResult = calc.lastElemInValues();
 			}
 			break;
 		case '3x':
 			if (calc.isNum(calc.lastElemInValues())) {
-				calc.updateLastNumInValFromButtons( diffFun.pow(calc.lastElemInValues(), 1/3));
+				calc.updateLastNumInValFromButtons(calc.pow(calc.lastElemInValues(), 1 / 3));
 				calc.currentResult = calc.lastElemInValues();
 			}
 			break;
@@ -90,37 +88,37 @@ for (const button of buttons) { // использовать forEach
 			break;
 		case '+/-':
 			if (calc.isNum(calc.lastElemInValues())) {
-				calc.updateLastNumInValFromButtons(diffFun.changeSign(calc.lastElemInValues(), 2));
+				calc.updateLastNumInValFromButtons(calc.changeSign(calc.lastElemInValues(), 2));
 				calc.currentResult = calc.lastElemInValues();
 			}
 			break;
 		case '%':
 			if (calc.isNum(calc.lastElemInValues())) {
-				calc.updateLastNumInValFromButtons(diffFun.percent(calc.lastElemInValues(), 2));
+				calc.updateLastNumInValFromButtons(calc.percent(calc.lastElemInValues(), 2));
 				calc.currentResult = calc.lastElemInValues();
 			}
 			break;
 		case 'ex':
 			if (calc.isNum(calc.lastElemInValues())) {
-				calc.updateLastNumInValFromButtons(diffFun.exp(calc.lastElemInValues(), 2));
+				calc.updateLastNumInValFromButtons(calc.exp(calc.lastElemInValues(), 2));
 				calc.currentResult = calc.lastElemInValues();
 			}
 			break;
 		case '10x':
 			if (calc.isNum(calc.lastElemInValues())) {
-				calc.updateLastNumInValFromButtons(diffFun.pow(10, calc.lastElemInValues()));
+				calc.updateLastNumInValFromButtons(calc.pow(10, calc.lastElemInValues()));
 				calc.currentResult = calc.lastElemInValues();
 			}
 			break;
 		case 'ln':
 			if (calc.isNum(calc.lastElemInValues()) && calc.lastElemInValues() !== 0) {
-				calc.updateLastNumInValFromButtons(diffFun.ln(calc.lastElemInValues()));
+				calc.updateLastNumInValFromButtons(calc.ln(calc.lastElemInValues()));
 				calc.currentResult = calc.lastElemInValues();
 			}
 			break;
 		case 'log10':
 			if (calc.isNum(calc.lastElemInValues()) && calc.lastElemInValues() > 0) {
-				calc.updateLastNumInValFromButtons(diffFun.log10(calc.lastElemInValues()));
+				calc.updateLastNumInValFromButtons(calc.log10(calc.lastElemInValues()));
 				calc.currentResult = calc.lastElemInValues();
 			}
 			break;
@@ -150,11 +148,4 @@ for (const button of buttons) { // использовать forEach
 		}
 		showCurrentValue();
 	};
-};
-
-
-window.calc = calc;
-window.onload = () => {
-	calc.currentResult = calc.lastElemInValues();
-	showCurrentValue();
 };
