@@ -7,7 +7,6 @@ const scoreboardValue = document.querySelector('.value');
 const showCurrentValue = () => {
 	if (calc.valFromButtons.length > 1) {
 		let history = calc.valFromButtons.slice(0, calc.valFromButtons.length - 1).join('');
-
 		scoreboardHistory.textContent = history;
 		scoreboardValue.textContent = calc.currentResult;
 	} else {
@@ -44,7 +43,7 @@ export const buttonEvent = (e) => {
 		calc.makeExpr(key);
 		break;
 	case '=':
-		calc.executeExpressionWithParentheses();
+		calc.valFromButtons.length !== 0 ? calc.executeExpressionWithParentheses() : null;
 		break;
 	case 'x2':
 		if (calc.isNum(calc.lastElemInValues())) {
@@ -142,4 +141,3 @@ export const buttonEvent = (e) => {
 	}
 	showCurrentValue();
 };
-window.calc = calc;

@@ -36,15 +36,29 @@
 	align-items: center;
 	justify-content: flex-end;
 	font-size: 2rem;
-	color: #fff;
 }
-.calc_wrapper__scoreboard .history {
+.calc_wrapper.calc_wrapper.black .history,
+.calc_wrapper.calc_wrapper.white .history {
 	font-size: 1.5rem;
+}
+.calc_wrapper.calc_wrapper.black .history {
 	color: #fb9e0c;
 }
-.calc_wrapper__scoreboard .value {
-	margin-right: 5px;
+
+.calc_wrapper.calc_wrapper.white .history {
+	color: #7a2a27;
 }
+
+.calc_wrapper.black .value {
+	margin-right: 5px;
+	color: #fff;
+}
+
+.calc_wrapper.white .value {
+	margin-right: 5px;
+	color: #242222;
+}
+
 .calc_wrapper__buttons_wrapper.eng {
 	width: 60%;
 	display: grid;

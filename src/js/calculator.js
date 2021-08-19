@@ -4,15 +4,19 @@ export default class Calculator {
 		this.currentResult = 0;
 		this.memoriseNum = 0;
 	}
+
 	lastElemInValues(arr = this.valFromButtons) {
 		return arr.length > 0 ? [...arr].pop() : [];
 	}
+
 	setLastElemInValues(elem) {
 		return this.valFromButtons[this.valFromButtons.length - 1] = elem;
 	}
+
 	udateLastElemInValues(elem) {
 		return this.valFromButtons[this.valFromButtons.length - 1] += elem;
 	}
+
 	sum(a, b) {
 		return Number(a) + Number(b);
 	}
@@ -36,18 +40,23 @@ export default class Calculator {
 	pow(a, b) {
 		return Math.pow(a, b);
 	}
+
 	changeSign(num) {
 		return -1 * num;
 	}
+
 	percent(num) {
 		return num * 0.01;
 	}
+
 	exp(num) {
 		return Math.exp(num);
 	}
+
 	ln(num) {
 		return Math.log(num);
 	}
+
 	log10(num) {
 		return Math.log10(num);
 	}
@@ -92,17 +101,18 @@ export default class Calculator {
 				} else false;
 			});
 		case ')':
-			return arr.filter(el => el === '(' || el === ')').every((el, key, array) => {
-				if (
-					arr[arr.length - 1] !== '(' &&
-					array.length % 2 !== 0 &&
-					arr.length - 1 !== '(' &&
-					key % 2 === 0 && array[key] === '(' ||
-					key % 2 !== 0 && array[key] === ')'
-				) {
-					return true;
-				} else false;
-			});
+			if (arr.filter(el => el === '(' || el === ')').length !== 0) {
+				return arr.filter((el) => el === '(' || el === ')').every((el, key, array) => {
+					if (
+						arr[arr.length - 1] !== '(' && 
+						array.length % 2 !== 0 && 
+						key % 2 === 0 && array[key] === '(' || 
+						key % 2 !== 0 && array[key] === ')'
+					) {
+						return true;
+					} else false;
+				});
+			} else return false;
 		default:
 			false;
 			break;
@@ -111,61 +121,24 @@ export default class Calculator {
 
 	makeExpr(key) {
 		if (
-			// ["0"] + "." => ["0."]
-			// ["0."] + isNum(5) => ["0.5"]
 			(key === '.' && this.isNum(this.lastElemInValues())) ||
-			(this.valFromButtons.length !== 0 && this.lastElemInValues().endsWith('.') && this.isNum(key))
+			(this.valFromButtons.length !== 0 && this.lastElemInValues().endsWith('.') && this.isNum(key)) ||
+			(this.valFromButtons.length !== 0 && this.isNum(this.lastElemInValues()) && this.isNum(key))
 		) {
 			this.udateLastElemInValues(key);
 		} else if (
-			// ["2"] + !isNum("+") => ["2", "+"]
-			// [..."6", "+"] + !isNum("(") => [..."6", "+", "("]
-			// [..."6", ")"] + !isNum("+") => [..."6", ")", "+"]
-			(this.valFromButtons.length !== 0 && this.isNum(this.lastElemInValues()) && !this.isNum(key) && key !== '(') ||
-			(this.valFromButtons.length !== 0 && !this.isNum(this.lastElemInValues()) && key === '(') ||
-			(this.valFromButtons.length !== 0 && this.lastElemInValues() === ')' && !this.isNum(key))
+			this.valFromButtons.length === 0 ||
+			(this.valFromButtons.length !== 0 && this.isNum(this.lastElemInValues()) && !this.isNum(key) && key !== '(') || // [...'5'] + '+' => [...'5', '+']
+			(this.valFromButtons.length !== 0 && !this.isNum(this.lastElemInValues()) && key === '(') || // [...'+'] + '(' => [...'+', '(']
+			(this.valFromButtons.length !== 0 && this.lastElemInValues() === ')' && !this.isNum(key)) || // [...')'] + '+' => [...')', '+']
+			(this.valFromButtons.length !== 0 && !this.isNum(this.lastElemInValues()) && this.isNum(key) && this.lastElemInValues() !== ')') // [...'+'] + '5 => [...'+', '5']
 		) {
 			this.valFromButtons.push(key);
 		} else if (
-			// ["(", "5", "*", "8", ")"] + isNum("6") =>  ["5", "+", "(", "5", "*", "8", "6"]
-			this.valFromButtons.length !== 0 &&
-			!this.isNum(this.lastElemInValues()) &&
-			this.lastElemInValues() === ')' &&
-			this.isNum(key)
+			(this.valFromButtons.length !== 0 && !this.isNum(this.lastElemInValues()) && this.lastElemInValues() === ')' && this.isNum(key)) ||
+			(this.valFromButtons.length !== 0 && !this.isNum(this.lastElemInValues()) && this.lastElemInValues() !== ')' && this.lastElemInValues() !== '(' && !this.isNum(key))
 		) {
 			this.setLastElemInValues(key);
-		} else if (
-			//  ["2", "+"] + isNum(key) =>  ["2", "+", "5"]
-			this.valFromButtons.length !== 0 &&
-			!this.isNum(this.lastElemInValues()) &&
-			this.isNum(key)
-		) {
-			this.valFromButtons.push(key);
-		} else if (
-			// ["5", "+"] + !isNum("*") => ["5", "*"]
-			this.valFromButtons.length !== 0 &&
-			!this.isNum(this.lastElemInValues()) &&
-			this.lastElemInValues() !== ')' &&
-			!this.isNum(key)
-		) {
-			this.valFromButtons.splice(this.valFromButtons.length - 1, 1);
-			this.valFromButtons.push(key);
-		} else if (
-			// ["2", "+", "5"] + isNum(6) => ["2", "+", "56"]
-			this.valFromButtons.length !== 0 &&
-			this.isNum(this.lastElemInValues()) &&
-			this.isNum(key)
-		) {
-			this.udateLastElemInValues(key);
-		} else if (
-			// [] + isNum(1) => ["1"]
-			// [] + '('
-			this.valFromButtons.length === 0 &&
-			this.isNum(key) ||
-			this.valFromButtons.length === 0 &&
-			key === '('
-		) {
-			this.valFromButtons.push(key);
 		}
 		this.currentResult = this.lastElemInValues();
 	}

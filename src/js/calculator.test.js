@@ -97,3 +97,19 @@ test('executeExpressionWithParentheses test', () => {
 test('executeExpressionWithParentheses test', () => {
 	expect(calc.executeExpressionWithParentheses(['2', '+', '6', '*', '3', '-', '2', '*', '(', '20', '+', '50', ')'])).toBe(-120);
 });
+
+test('bracketsValidation test', () => {
+	expect(calc.bracketsValidation(['2', '+', '(', '56', '-'], '(')).toBe(false);
+});
+
+test('bracketsValidation test', () => {
+	expect(calc.bracketsValidation(['2', '+', '(', '56', '-'], ')')).toBe(true);
+});
+
+test('bracketsValidation test', () => {
+	expect(calc.bracketsValidation(['2', '+', '(', '56', ')'], '(')).toBe(false);
+});
+
+test('bracketsValidation test', () => {
+	expect(calc.bracketsValidation(['2', '+', '(', '56', ')', '+', '('], '(')).toBe(false);
+});
