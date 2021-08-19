@@ -83,6 +83,7 @@ export default class Calculator {
 		case '(':
 			return arr.filter(el => el === '(' || el === ')').every((el, key, array) => {
 				if (
+					arr[arr.length - 1] !== ')' &&
 					array.length % 2 === 0 &&
 					key % 2 === 0 && array[key] === '(' ||
 					key % 2 !== 0 && array[key] === ')'
@@ -93,7 +94,9 @@ export default class Calculator {
 		case ')':
 			return arr.filter(el => el === '(' || el === ')').every((el, key, array) => {
 				if (
+					arr[arr.length - 1] !== '(' &&
 					array.length % 2 !== 0 &&
+					arr.length - 1 !== '(' &&
 					key % 2 === 0 && array[key] === '(' ||
 					key % 2 !== 0 && array[key] === ')'
 				) {

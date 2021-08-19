@@ -142,3 +142,4 @@ export const buttonEvent = (e) => {
 	}
 	showCurrentValue();
 };
+window.calc = calc;
