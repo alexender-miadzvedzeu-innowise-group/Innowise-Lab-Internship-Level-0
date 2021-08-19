@@ -116,17 +116,17 @@ export const buttonEvent = (e) => {
 		}
 		break;
 	case 'mc':
-		if (calc.isNum(calc.currentResult) && calc.valFromButtons.length === 0) {
+		if (calc.isNum(calc.currentResult)) {
 			calc.memoriseClear();
 		}
 		break;
 	case 'm+':
-		if (calc.isNum(calc.currentResult) && calc.valFromButtons.length === 0) {
+		if (calc.isNum(calc.currentResult)) {
 			calc.memoriseSum();
 		}
 		break;
 	case 'm-':
-		if (calc.isNum(calc.currentResult) && calc.valFromButtons.length === 0) {
+		if (calc.isNum(calc.currentResult)) {
 			calc.memoriseMinus();
 		}
 		break;
